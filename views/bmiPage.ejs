@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <% include ./head %>
+        <script src="/globalPage.js"></script>
+        <script src="/bmiPage.js"></script>
+    </head>
+
+    <body class="container">
+        <main>
+            <h3>
+                Enter your BMI information:
+            </h3>
+        </main>
+        <form>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Name</label>
+                <div class="col-xs-4">
+                    <input type="text" class="form-control"
+                         placeholder="Enter your name" id="name">
+                </div>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Height</label>
+                <div class="col-xs-4">
+                    <input type="text" class="form-control"
+                         placeholder="Enter your height" id="height">
+                </div>
+                <label class="col-sm-2 col-form-label">cm</label>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">Weight</label>
+                <div class="col-xs-4">
+                    <input type="text" class="form-control"
+                         placeholder="Enter your weight" id="weight">
+                </div>
+                <label class="col-sm-2 col-form-label">kg</label>
+            </div>
+            <div class="form-group row">
+                <label class="col-sm-2 col-form-label">BMI: </label>
+                <div class="col-xs-4">
+                    <input type="text" class="form-control"
+                         placeholder="Your BMI result" id="bmi-value">
+                </div>
+            </div>
+            <button class="btn btn-primary" id="btn-calculate-bmi">Calculate BMI</button>
+        </form>
+    </body>
+</html>
