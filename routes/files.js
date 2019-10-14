@@ -40,12 +40,25 @@ router.get('/', async (req, res) => {
                 return
             }
             i = i + 1
-            // debugger
         })
     } catch (error) {
         res.send(`Error when reading files in Folder: ${error}`)
     }
 })
+const verifyFileExtensions = async (files) => {
+    const keys = await Object.keys(files)
+    for(let i = 0; i < keys.length; i++) {
+        const key = keys[i]
+        const fileObject = files[key]
+        const fileExtension = fileObject.name.split('.').pop()
+        //Chỉ cho phép upload một số  "extensions" nào đó?
+        if(["png", "jpg", "jpeg", "gif", "mp3"].indexOf(fileExtension.toLowerCase()) < 0) {
+            debugger
+            return false
+        }
+    }
+    return true
+}
 //upload multiple files
 router.post('/uploads', async (req, res) => {
     //Dữ liệu files được lưu tại: req.files
@@ -65,10 +78,19 @@ router.post('/uploads', async (req, res) => {
                 })    
                 return
             }
+            const verifyExtensions =  await verifyFileExtensions(req.files)
+            if(verifyExtensions === false) {
+                res.json({
+                    result: "failed",
+                    message: `You can only upload png, jpg, gif, jpeg files!`
+                })
+
+                return
+            }
             keys.forEach(async (key) => {
                 const fileName = `${Math.random().toString(36)}`
                 const fileObject = await req.files[key]
-                const fileExtension = fileObject.name.split('.').pop()
+                const fileExtension = fileObject.name.split('.').pop()                                
                 const destination = `${path.join(__dirname, '..')}/uploads/${fileName}.${fileExtension}`
                 let error = await fileObject.mv(destination)
                 if(error) {
