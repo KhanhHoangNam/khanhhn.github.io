@@ -12,7 +12,7 @@ app.use(bodyParser.urlencoded({extended:true}));
 //Upload files
 const fileUpload = require('express-fileupload')
 app.use(fileUpload({
-    limits: {fileSize: 150 * 1024 * 1024}
+    limits: {fileSize: 0.5 * 1024 * 1024} //Maximum 150MB
 }))
 const PORT = 8080
 //Set View's engine

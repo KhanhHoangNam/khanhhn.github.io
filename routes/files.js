@@ -51,9 +51,10 @@ const verifyFileExtensions = async (files) => {
         const key = keys[i]
         const fileObject = files[key]
         const fileExtension = fileObject.name.split('.').pop()
+        const fileExceed = fileObject.truncated == true //File vượt quá số MB được chỉ định
         //Chỉ cho phép upload một số  "extensions" nào đó?
-        if(["png", "jpg", "jpeg", "gif", "mp3"].indexOf(fileExtension.toLowerCase()) < 0) {
-            debugger
+        if(["png", "jpg", "jpeg", "gif", "mp3"].indexOf(fileExtension.toLowerCase()) < 0
+                                                        || fileExceed) {
             return false
         }
     }
@@ -82,7 +83,7 @@ router.post('/uploads', async (req, res) => {
             if(verifyExtensions === false) {
                 res.json({
                     result: "failed",
-                    message: `You can only upload png, jpg, gif, jpeg files!`
+                    message: `You can only upload png, jpg, gif, jpeg files! or fileSize > 0.5MB`
                 })
 
                 return
@@ -104,7 +105,8 @@ router.post('/uploads', async (req, res) => {
                 if(key === keys[keys.length - 1]) {
                     res.json({
                         result: "Success",
-                        message: `Upload files successfully!`
+                        message: `Upload files successfully!`,
+                        numberOfFiles: keys.length
                     })    
                     return
                 }
