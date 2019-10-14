@@ -46,5 +46,53 @@ router.get('/', async (req, res) => {
         res.send(`Error when reading files in Folder: ${error}`)
     }
 })
-
+//upload multiple files
+router.post('/uploads', async (req, res) => {
+    //Dữ liệu files được lưu tại: req.files
+    try {
+        if(!req.files) {
+            res.json({
+                result: "failed",
+                message: `Can't find files to upload`
+            })  
+            return
+        }
+            const keys = Object.keys(req.files)
+            if(keys.length === 0) {
+                res.json({
+                    result: "failed",
+                    message: `Can't find files to upload`
+                })    
+                return
+            }
+            keys.forEach(async (key) => {
+                const fileName = `${Math.random().toString(36)}`
+                const fileObject = await req.files[key]
+                const fileExtension = fileObject.name.split('.').pop()
+                const destination = `${path.join(__dirname, '..')}/uploads/${fileName}.${fileExtension}`
+                let error = await fileObject.mv(destination)
+                if(error) {
+                    res.json({
+                        result: "failed",
+                        message: `Can't find files to upload`
+                    })    
+                    return
+                }
+                //Kiểm tra file cuối cùng trong List?
+                if(key === keys[keys.length - 1]) {
+                    res.json({
+                        result: "Success",
+                        message: `Upload files successfully!`
+                    })    
+                    return
+                }
+            })
+        
+    } catch (error) {
+        res.json({
+            result: "failed",
+            message: `Can't upload files. Error: ${error}`
+        })
+    }
+})
 module.exports = router

@@ -9,6 +9,11 @@ const app = express()
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended:true}));
+//Upload files
+const fileUpload = require('express-fileupload')
+app.use(fileUpload({
+    limits: {fileSize: 150 * 1024 * 1024}
+}))
 const PORT = 8080
 //Set View's engine
 app.set('view engine', 'ejs') //Extended JavaScript
