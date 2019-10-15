@@ -24,6 +24,7 @@ const redirectExample = require('./routes/redirectExample')
 const books = require('./routes/books')
 const files = require('./routes/files')
 const users = require('./routes/users')
+const tasks = require('./routes/task')
 app.listen(PORT, () => {
     console.log(`Server is listening on port: ${PORT}`)
 })
@@ -46,6 +47,8 @@ app.use('/files', files)
 //error 404
 //http://localhost:8080/users/bmi?name=Khanh&weight=54&height=1.64
 app.use('/users', users)
+//
+app.use('/tasks', tasks)
 app.use((req, res) => {
     const http404file = path.join(__dirname) + '/error404.html'
     res.status(404).sendFile(http404file)//Đưa sang một file html riêng?
