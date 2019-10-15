@@ -92,4 +92,21 @@ router.put('/', async (req, res) => {
         })
     }
 })
+//Phương thức DELETE = Phương thức xóa 1 record
+router.delete('/', async (req, res) => {
+    const {id} = req.body
+    if(isNaN(parseInt(id)) === true) {
+        res.json({
+            result: "failed",
+            message: "You must enter task's id. Id must be a number"
+        })
+        return
+    }
+    taskData = taskData.filter(task => task.id !== parseInt(id))
+    res.json({
+        result: "success",
+        tasks: taskData,
+        message: `Delete a task successfully!`
+    })
+})
 module.exports = router
