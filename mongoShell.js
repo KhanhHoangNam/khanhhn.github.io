@@ -136,15 +136,46 @@
 // ])
 //Su dung phep join 2 collections de tao ra mot collection co:
 //Thong tin products, kem thong tin CHI TIET tung category
-db.products.aggregate([
+
+// db.products.aggregate([
+//     {
+//         $lookup: {
+//                 from: "categories",
+//                 localField: "category", //field cua "products"
+//                 foreignField: "name",  //field cua categories
+//                 as: "category_doc"
+//             }
+//         }, //chung ta muon "phang hoa" truong category_doc?
+//     {
+//         $unwind: "$category_doc"
+//     }, //Chung ta muon them dieu kien: chi lay cac doc co quantity >=100
+//     {
+//         $match: {quantity: {$gte: 100}}
+//     },
+//     {
+//         $project: {"category_doc._id": 0, "category_doc.name": 0}
+//     }
+// ])
+//Giờ chúng ta join 2 collection theo chiều ngược lại:
+//Hiện danh sách categories, có trường products_doc danh sách chi tiết các products
+db.categories.aggregate([
     {
-        $lookup: {
-                from: "categories",
-                localField: "category", //field cua "products"
-                foreignField: "name",  //field cua categories
-                as: "category_doc"
-            }
-        }
+     $lookup:
+       {
+         from: "products",
+         localField: "name",//field của "categories"
+         foreignField: "category",//field của products
+         as: "products_doc"
+       }
+  },{
+      $match: { "products_doc": { $ne: [] } }
+   },{ 
+      $project : { 
+          "products_doc._id": 0, 
+          "products_doc.size":0,
+          "products_doc.category":0,
+       } 
+   }
 ])
 
 
